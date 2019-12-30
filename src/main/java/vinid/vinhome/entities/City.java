@@ -1,6 +1,8 @@
 package vinid.vinhome.entities;
 // Generated Dec 29, 2019 10:33:01 PM by Hibernate Tools 4.3.5.Final
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
@@ -57,6 +59,7 @@ public class City implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "status", nullable = false)
+	@JsonIgnore
 	public Status getStatus() {
 		return this.status;
 	}
@@ -84,6 +87,7 @@ public class City implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "city")
+	@JsonIgnore
 	public Set<District> getDistricts() {
 		return this.districts;
 	}

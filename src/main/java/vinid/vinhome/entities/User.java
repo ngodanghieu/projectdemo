@@ -31,7 +31,7 @@ public class User implements java.io.Serializable {
 	private String userPhone;
 	private String userEmail;
 	private String userHash;
-	private int userOptCode;
+	private String userOptCode;
 	private Date userExpiredOtp;
 	private int userProvider;
 	private String userFacebookId;
@@ -50,7 +50,7 @@ public class User implements java.io.Serializable {
 	}
 
 	public User(int status, String userName, String userFullName, String userPhone, String userEmail,
-			String userHash, int userOptCode, Date userExpiredOtp, int userProvider, String userFacebookId,
+			String userHash, String userOptCode, Date userExpiredOtp, int userProvider, String userFacebookId,
 			String userAuthToken, Date userCreatedOn, String userCreatedBy, Date userModifiedOn,
 			String userModifiedBy) {
 		this.status = status;
@@ -71,7 +71,7 @@ public class User implements java.io.Serializable {
 	}
 
 	public User(int status, String userName, String userFullName, String userPhone, String userEmail,
-			String userHash, int userOptCode, Date userExpiredOtp, int userProvider, String userFacebookId,
+			String userHash, String userOptCode, Date userExpiredOtp, int userProvider, String userFacebookId,
 			String userAuthToken, Date userCreatedOn, String userCreatedBy, Date userModifiedOn, String userModifiedBy,
 			Set<UserHome> userHomes, Set<OrderHistory> orderHistories, Set<UserRole> userRoles, Set<Order> orders,
 			Set<VinPoint> vinPoints) {
@@ -166,15 +166,15 @@ public class User implements java.io.Serializable {
 	}
 
 	@Column(name = "user_opt_code", nullable = false)
-	public int getUserOptCode() {
+	public String getUserOptCode() {
 		return this.userOptCode;
 	}
 
-	public void setUserOptCode(int userOptCode) {
+	public void setUserOptCode(String userOptCode) {
 		this.userOptCode = userOptCode;
 	}
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "user_expired_otp", nullable = false, length = 10)
 	public Date getUserExpiredOtp() {
 		return this.userExpiredOtp;

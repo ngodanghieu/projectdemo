@@ -6,6 +6,7 @@ import vinid.vinhome.entities.User;
 import vinid.vinhome.repository.IUserRepository;
 import vinid.vinhome.request.UserRequest;
 import vinid.vinhome.response.UserResponse;
+import vinid.vinhome.util.Constant;
 import vinid.vinhome.util.Helper;
 
 import java.util.Date;
@@ -16,6 +17,9 @@ public class UserService {
     @Autowired
     private IUserRepository iUserRepository;
 
+    @Autowired
+    private SmsService smsService;
+
     public UserResponse save(UserRequest userRequest){
         String HasPw = Helper.HasPw(userRequest.getUserHash());
         User newUser = new User();
@@ -24,7 +28,9 @@ public class UserService {
         newUser.setUserFullName(userRequest.getUserFullName());
         newUser.setUserCreatedOn(new Date());
         newUser.setStatus(1);
+        sendOTP(newUser,userRequest.getUserPhone());
         User result = iUserRepository.save(newUser);
+
         if (result == null)
             return null;
         else
@@ -77,4 +83,28 @@ public class UserService {
     private UserResponse MapEntitytoModelResponse(User user){
         return new UserResponse(user.getUserFullName(),user.getUserPhone(),user.getUserEmail(),"");
     }
+
+    private void sendOTP(User u, String phone) {
+//        String otp = new RandomStringHelper(6, ThreadLocalRandom.current(), RandomStringHelper.digits).nextString();
+        String otp = "123456";
+//        smsService.sendSMSOTPCode(phone, otp);
+        u.setUserOptCode(otp);
+        long nowTime = new Date().getTime();
+        u.setUserExpiredOtp(new Date(nowTime + Constant.TIME_EXPIRED_OTP));
+    }
+
+    public boolean validateOTPCode(String phone, String otpCode) throws Exception {
+        Optional<User> optionalUser= iUserRepository.findUserByPhone(phone);
+        User user = optionalUser.isPresent() ? optionalUser.get(): null;
+        if (user != null){
+                if(user.getUserOptCode().equals(otpCode) && user.getUserExpiredOtp().after(new Date())) {
+                    return true;
+            }else {
+                return false;
+            }
+        }else {
+            return false;
+        }
+    }
+
 }

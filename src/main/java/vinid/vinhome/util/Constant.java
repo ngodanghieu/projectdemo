@@ -396,4 +396,5 @@ public class Constant {
         public static String CANCELED_ORDER_TO_USER_CONTENT_EN = "The restaurant has canceled your order %s. Need to re-order?";
         public static String CANCELED_ORDER_TO_USER_CONTENT_ES = "El restaurante ha cancelado su orden %s. ¿Le gustaría ordenar de nuevo?";
     }
+    public final static Long TIME_EXPIRED_OTP = 15 * 60 * 1000L;
 }
