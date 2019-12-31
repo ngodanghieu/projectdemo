@@ -4,12 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import vinid.vinhome.entities.User;
 import vinid.vinhome.repository.IUserRepository;
+import vinid.vinhome.request.SearchUserRequest;
 import vinid.vinhome.request.UserRequest;
 import vinid.vinhome.response.UserResponse;
 import vinid.vinhome.util.Constant;
 import vinid.vinhome.util.Helper;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,6 +27,7 @@ public class UserService {
         User newUser = new User();
         newUser.setUserPhone(userRequest.getUserPhone());
         newUser.setUserHash(HasPw);
+        newUser.setUserEmail(userRequest.getUserEmail());
         newUser.setUserFullName(userRequest.getUserFullName());
         newUser.setUserCreatedOn(new Date());
         newUser.setStatus(1);
@@ -91,6 +94,7 @@ public class UserService {
         u.setUserOptCode(otp);
         long nowTime = new Date().getTime();
         u.setUserExpiredOtp(new Date(nowTime + Constant.TIME_EXPIRED_OTP));
+
     }
 
     public boolean validateOTPCode(String phone, String otpCode) throws Exception {
@@ -105,6 +109,51 @@ public class UserService {
         }else {
             return false;
         }
+    }
+    // Bai tap cua vinid
+    public User findById(Long id){
+        Optional<User>  optionalUser = iUserRepository.findById(id);
+        if (optionalUser.isPresent())
+            return optionalUser.get();
+        else
+            return null;
+    }
+
+    public UserResponse update(UserRequest userRequest){
+        String HasPw = Helper.HasPw(userRequest.getUserHash());
+        User newUser = new User();
+        newUser.setUserId(userRequest.getId());
+        newUser.setUserPhone(userRequest.getUserPhone());
+        newUser.setUserEmail(userRequest.getUserEmail());
+        newUser.setUserHash(HasPw);
+        newUser.setUserFullName(userRequest.getUserFullName());
+        newUser.setUserCreatedOn(new Date());
+        newUser.setStatus(1);
+        sendOTP(newUser,userRequest.getUserPhone());
+        User result = iUserRepository.save(newUser);
+
+        if (result == null)
+            return null;
+        else
+            return MapEntitytoModelResponse(newUser);
+    }
+
+    public Boolean deleteById(Long id){
+         if (findById(id) != null){
+             iUserRepository.deleteById(id);
+             return true;
+         }else{
+             return false;
+         }
+
+    }
+    public List<User> search(String keyWord){
+        String key = "%" + keyWord + "%";
+        return iUserRepository.findUserByName(key,key);
+    }
+
+    public List<User> getAll(){
+       return iUserRepository.getAll();
     }
 
 }

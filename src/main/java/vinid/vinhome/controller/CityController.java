@@ -1,5 +1,8 @@
 package vinid.vinhome.controller;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +21,10 @@ public class CityController {
     @Autowired
     private CityService cityService;
 
+    @ApiOperation(value = "Get All City",response = CityResponse.class,responseContainer = "List")
+    @ApiResponses({
+           @ApiResponse(code = 500 , message = "Loi server")
+    })
     @RequestMapping(value = "/api/get-all-city", method = RequestMethod.GET)
     public ResponseEntity<?> getAllCity(){
         ResponseData responseData = new ResponseData();
