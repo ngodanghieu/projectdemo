@@ -2,20 +2,13 @@ package vinid.vinhome.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import vinid.vinhome.entities.Acreage;
-import vinid.vinhome.entities.AcreageHome;
-import vinid.vinhome.entities.AdressHome;
-import vinid.vinhome.entities.Home;
-import vinid.vinhome.repository.IAcreage;
-import vinid.vinhome.repository.IAcreageHomeRepository;
-import vinid.vinhome.repository.IAdressHome;
-import vinid.vinhome.repository.IHomeRepository;
+import vinid.vinhome.entities.*;
+import vinid.vinhome.repository.*;
 import vinid.vinhome.request.HomeRequest;
 import vinid.vinhome.request.SearchRequset;
 import vinid.vinhome.response.DataResultResponse;
 import vinid.vinhome.response.HomeResponse;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +27,9 @@ public class HomeService {
 
     @Autowired
     private IAcreageHomeRepository iAcreageHomeRepository;
+
+    @Autowired
+    private IStatusRepository iStatusRepository;
 
     public List<HomeResponse> getAllHome(){
         List<Home> homeResponseList = iHomeRepository.getAllHome();
@@ -79,8 +75,10 @@ public class HomeService {
         Home home = iHomeRepository.findByHomeId(homeRequest.getId());
         if (home != null){
              Home save =  mappingModelToEntitiHome(home,homeRequest);
+             save.setStatus(iStatusRepository.findByStatusCode("active"));
              iHomeRepository.save(save);
 
+    //  todo : con phai lam nhieu
 
             return true;
         }else {
