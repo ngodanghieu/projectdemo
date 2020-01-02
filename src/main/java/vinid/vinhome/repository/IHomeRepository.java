@@ -16,6 +16,8 @@ public interface IHomeRepository extends JpaRepository<Home,Long> {
             "WHERE status.status_code = 'active'")
     List<Home> getAllHome();
 
+    Home findByHomeId(Long idHome);
+
     @Query(nativeQuery = true, value = "SELECT * FROM home WHERE home_id = :id")
     Optional<User> findUserById(@Param("id") Long id);
 

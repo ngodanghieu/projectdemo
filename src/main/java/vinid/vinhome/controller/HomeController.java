@@ -8,10 +8,13 @@ import org.springframework.web.multipart.MultipartFile;
 import vinid.vinhome.model.UploadForm;
 import vinid.vinhome.repository.IHomeRepository;
 import vinid.vinhome.repository.IHomeWorkTimeRepository;
+import vinid.vinhome.request.HomeRequest;
 import vinid.vinhome.request.SearchRequset;
+import vinid.vinhome.request.UserRequest;
 import vinid.vinhome.response.DataResultResponse;
 import vinid.vinhome.response.HomeResponse;
 import vinid.vinhome.response.ResponseData;
+import vinid.vinhome.response.UserResponse;
 import vinid.vinhome.service.HomeService;
 import vinid.vinhome.service.HomeWorkTimeService;
 import vinid.vinhome.util.Constant;
@@ -106,6 +109,44 @@ public class HomeController {
         }
         return new ResponseEntity<>(responseData, HttpStatus.BAD_REQUEST);
     }
+
+    @PostMapping(value = "create-home")
+    public ResponseEntity<?> register(HomeRequest homeRequest){
+        ResponseData responseData = new ResponseData();
+        try{
+            if (homeRequest == null) {
+                responseData.setStatus(7);
+                responseData.setMessage(Constant.ErrorTypeCommon.INVALID_INPUT);
+                responseData.setErrorType(Constant.ErrorTypeCommon.INVALID_INPUT);
+                return new ResponseEntity<ResponseData>(responseData, HttpStatus.BAD_REQUEST);
+            }
+
+            boolean b = homeService.careateHome(homeRequest);
+            if (b) {
+                responseData.setStatus(2);
+                responseData.setMessage("Exist an phone.");
+                responseData.setErrorType(Constant.ErrorTypeCommon.PHONE_EXISTS);
+                return new ResponseEntity<ResponseData>(responseData, HttpStatus.BAD_REQUEST);
+            }
+            if(b){
+                responseData.setStatus(1);
+                responseData.setContent(homeRequest);
+                responseData.setMessage(Constant.ErrorTypeCommon.OK);
+                responseData.setErrorType(Constant.ErrorTypeCommon.OK);
+                return new ResponseEntity<ResponseData>(responseData, HttpStatus.OK);
+            }else {
+                responseData.setStatus(2);
+                responseData.setMessage("ERROR_PROCESS_DATA");
+                responseData.setErrorType(Constant.ErrorTypeCommon.ERROR_PROCESS_DATA);
+                return new ResponseEntity<ResponseData>(responseData, HttpStatus.BAD_REQUEST);
+            }
+        }catch (Exception e){
+            responseData.setStatus(2);
+            responseData.setMessage(e.toString());
+        }
+        return new ResponseEntity<ResponseData>(responseData, HttpStatus.BAD_REQUEST);
+    }
+
 
     @PostMapping("upload")
     public ResponseEntity<?> uploadFile(@ModelAttribute("uploadForm") UploadForm form) {

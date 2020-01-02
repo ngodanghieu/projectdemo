@@ -76,7 +76,16 @@ public class HomeService {
     }
 
     public Boolean careateHome(HomeRequest homeRequest){
-        return true;
+        Home home = iHomeRepository.findByHomeId(homeRequest.getId());
+        if (home != null){
+             Home save =  mappingModelToEntitiHome(home,homeRequest);
+             iHomeRepository.save(save);
+
+
+            return true;
+        }else {
+            return false;
+        }
     }
 
     public  List<DataResultResponse> getHomeByIdUser(Long idUser){
@@ -87,7 +96,7 @@ public class HomeService {
                 AcreageHome acreageHome = iAcreageHomeRepository.getByIdHome(x.getHomeId());
                 List<String> listPrice = null;
                 if (acreageHome != null){
-                    listPrice = remodeDulicate(iHomeRepository.getAllPrice(acreageHome.getAcreage().getAcreageId()));
+                    listPrice = removeDulicates(iHomeRepository.getAllPrice(acreageHome.getAcreage().getAcreageId()));
                 }
                 result.add(mapEntitiToDataResultResponse(x,listPrice == null ? null : listPrice));
             });
@@ -98,7 +107,7 @@ public class HomeService {
 
     }
 
-    private List<String> remodeDulicate(List<String> list){
+    private List<String> removeDulicates(List<String> list){
         List<String> listWithoutDuplicates = list.stream()
                 .distinct()
                 .collect(Collectors.toList());
@@ -113,6 +122,7 @@ public class HomeService {
                 .append("(").append(acreage.getWidth()).append("x").append(acreage.getHeight()).append(")");
         return new HomeResponse(home.getHomeId(),title,home.getContent(),home.getImageUrl(),acreageString.toString(),home.getPrice(),home.getCreatedOn(),home.getCreatedBy());
     }
+
     private String getTitleHome(Long id){
         AdressHome adressHome = adressHomeService.getiAdressHomeByIdHome(id);
         StringBuilder title = new StringBuilder();
@@ -123,6 +133,13 @@ public class HomeService {
     private DataResultResponse mapEntitiToDataResultResponse(Home home,  List<String> priceList){
         String title = getTitleHome(home.getHomeId());
         return new DataResultResponse(home.getHomeId(),title,priceList);
+    }
+
+    private Home mappingModelToEntitiHome(Home home, HomeRequest homeRequest){
+        home.setContent(homeRequest.getContent());
+        home.setPrice(homeRequest.getPrice());
+        home.setImageUrl(homeRequest.getImageUrl());
+        return home;
     }
 
 }

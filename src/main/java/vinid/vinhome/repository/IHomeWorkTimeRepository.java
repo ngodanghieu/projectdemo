@@ -12,4 +12,5 @@ public interface IHomeWorkTimeRepository extends JpaRepository<HomeWorktime,Long
     @Query(nativeQuery = true,value = "SELECT FROM home_worktime home_id = :idhome")
     List<HomeWorktime> getAllByIdHome(@Param("idhome") Long id);
 
+
 }
