@@ -17,16 +17,11 @@ import vinid.vinhome.util.Constant;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = "/api/test/user/")
+@RequestMapping(value = "/api/user/")
 public class UserController {
 
     @Autowired
     private UserService userService;
-
-    @GetMapping(value = "test")
-    public String zzz (){
-        return  "sadasdas";
-    }
 
     @PostMapping(value = "register")
     public ResponseEntity<?> register(UserRequest userRequest){

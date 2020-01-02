@@ -8,6 +8,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public class HomeRequest {
+    private Long id;
     private String content;
     private String imageUrl;
     private double price;

@@ -11,7 +11,7 @@ public interface IDistrictRepository extends JpaRepository<District,Long> {
 
     @Query(nativeQuery = true, value = "SELECT * FROM district" )
     List<District> getAllDistrict();
-    @Query(nativeQuery = true, value = "SELECT district.* FROM district INNER JOIN district.city_id = city.city_id WHERE city.code = :codecity" )
+    @Query(nativeQuery = true, value = "SELECT district.* FROM district INNER JOIN city ON district.city_id = city.city_id WHERE city.code = :codecity" )
     List<District> getByCodeCity(@Param("codecity")  String codeCity);
 
 }

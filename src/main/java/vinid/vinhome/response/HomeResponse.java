@@ -14,6 +14,7 @@ public class HomeResponse {
     private String title;
     private String content;
     private String imageUrl;
+    private String totalAcreage;
     private double price;
     private Date createdOn;
     private String createdBy;
