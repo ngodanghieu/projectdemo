@@ -29,7 +29,7 @@ public class UserController {
     }
 
     @PostMapping(value = "register")
-    public ResponseEntity<?> register(@RequestBody @Valid UserRequest userRequest){
+    public ResponseEntity<?> register(UserRequest userRequest){
         ResponseData responseData = new ResponseData();
         try{
             if (userRequest == null) {

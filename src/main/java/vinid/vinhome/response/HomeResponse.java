@@ -11,6 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class HomeResponse {
     private Long homeId;
+    private String title;
     private String content;
     private String imageUrl;
     private double price;

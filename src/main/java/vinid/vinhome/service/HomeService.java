@@ -2,6 +2,7 @@ package vinid.vinhome.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import vinid.vinhome.entities.AdressHome;
 import vinid.vinhome.entities.Home;
 import vinid.vinhome.repository.IHomeRepository;
 import vinid.vinhome.request.HomeRequest;
@@ -16,12 +17,20 @@ public class HomeService {
     @Autowired
     private IHomeRepository iHomeRepository;
 
+    @Autowired
+    private AdressHomeService adressHomeService;
+
     public List<HomeResponse> getAllHome(){
         List<Home> homeResponseList = iHomeRepository.getAllHome();
         List<HomeResponse> result = new LinkedList<>();
         if (homeResponseList != null && !homeResponseList.isEmpty()){
             homeResponseList.forEach(x ->{
-                    result.add(mappingEntitiToResponse(x));
+                HomeResponse homeResponse = mappingEntitiToResponse(x);
+                AdressHome adressHome = adressHomeService.getiAdressHomeByIdHome(x.getHomeId());
+                StringBuilder title = new StringBuilder();
+                title.append(adressHome.getNameHome()).append(" + ").append(adressHome.getBuilding().getName());
+                homeResponse.setTitle(title.toString());
+                result.add(homeResponse);
             });
             return result;
         }else {
@@ -48,9 +57,12 @@ public class HomeService {
         List<HomeResponse> result = new LinkedList<>();
         if (homeResponseList != null && !homeResponseList.isEmpty()){
             homeResponseList.forEach(x ->{
-
-                    result.add(mappingEntitiToResponse(x));
-
+                HomeResponse homeResponse = mappingEntitiToResponse(x);
+                AdressHome adressHome = adressHomeService.getiAdressHomeByIdHome(x.getHomeId());
+                StringBuilder title = new StringBuilder();
+                title.append(adressHome.getNameHome()).append(" + ").append(adressHome.getBuilding().getName());
+                homeResponse.setTitle(title.toString());
+                result.add(homeResponse);
             });
             return result;
         }else {
@@ -63,7 +75,7 @@ public class HomeService {
     }
 
     private HomeResponse mappingEntitiToResponse(Home home){
-        return new HomeResponse(home.getHomeId(),home.getContent(),home.getImageUrl(),home.getPrice(),home.getCreatedOn(),home.getCreatedBy());
+        return new HomeResponse(home.getHomeId(),"",home.getContent(),home.getImageUrl(),home.getPrice(),home.getCreatedOn(),home.getCreatedBy());
     }
 
 

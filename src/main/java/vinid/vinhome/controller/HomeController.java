@@ -44,7 +44,7 @@ public class HomeController {
 
         }catch (Exception e){
             responseData.setStatus(2);
-            responseData.setErrorType(e.getMessage().toString());
+            responseData.setErrorType(e.toString());
             responseData.setMessage(Constant.ErrorTypeCommon.ERROR_PROCESS_DATA);
         }
         return new ResponseEntity<>(responseData, HttpStatus.BAD_REQUEST);

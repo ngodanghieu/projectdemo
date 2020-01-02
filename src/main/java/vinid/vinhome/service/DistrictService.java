@@ -30,6 +30,21 @@ public class DistrictService {
         }
 
     }
+
+    public List<DistrictResponse> getAllByCityCode(String code){
+        List<District> districtList = iDistrictRepository.getByCodeCity(code);
+        List<DistrictResponse> result = new LinkedList<>();
+        if (districtList != null && !districtList.isEmpty()){
+            districtList.forEach( x -> {
+                result.add(mappingEntitiToResponse(x));
+            });
+            return result;
+        }else {
+            return null;
+        }
+
+    }
+
     private DistrictResponse mappingEntitiToResponse(District district){
         return new DistrictResponse(mapEntitiToResponseCity(district.getCity()),district.getCode(),district.getName());
     }

@@ -1,20 +1,20 @@
 package vinid.vinhome.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
-import org.springframework.beans.factory.annotation.Required;
-
-import javax.validation.constraints.Email;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserRequest {
-    private Long id;
+//    private Long id;
     private String userFullName;
-    @Length(min = 8 , max = 12)
+//    @Length(min = 8 , max = 12)
     private String userPhone;
-    @Email(message = "EMAIL INVALID")
+//    @Email(message = "EMAIL INVALID")
     private String userEmail;
     private String userHash;
     private String token;

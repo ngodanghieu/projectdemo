@@ -110,50 +110,50 @@ public class UserService {
             return false;
         }
     }
-    // Bai tap cua vinid
-    public User findById(Long id){
-        Optional<User>  optionalUser = iUserRepository.findById(id);
-        if (optionalUser.isPresent())
-            return optionalUser.get();
-        else
-            return null;
-    }
-
-    public UserResponse update(UserRequest userRequest){
-        String HasPw = Helper.HasPw(userRequest.getUserHash());
-        User newUser = new User();
-        newUser.setUserId(userRequest.getId());
-        newUser.setUserPhone(userRequest.getUserPhone());
-        newUser.setUserEmail(userRequest.getUserEmail());
-        newUser.setUserHash(HasPw);
-        newUser.setUserFullName(userRequest.getUserFullName());
-        newUser.setUserCreatedOn(new Date());
-        newUser.setStatus(1);
-        sendOTP(newUser,userRequest.getUserPhone());
-        User result = iUserRepository.save(newUser);
-
-        if (result == null)
-            return null;
-        else
-            return MapEntitytoModelResponse(newUser);
-    }
-
-    public Boolean deleteById(Long id){
-         if (findById(id) != null){
-             iUserRepository.deleteById(id);
-             return true;
-         }else{
-             return false;
-         }
-
-    }
-    public List<User> search(String keyWord){
-        String key = "%" + keyWord + "%";
-        return iUserRepository.findUserByName(key,key);
-    }
-
-    public List<User> getAll(){
-       return iUserRepository.getAll();
-    }
+//    // Bai tap cua vinid
+//    public User findById(Long id){
+//        Optional<User>  optionalUser = iUserRepository.findById(id);
+//        if (optionalUser.isPresent())
+//            return optionalUser.get();
+//        else
+//            return null;
+//    }
+//
+//    public UserResponse update(UserRequest userRequest){
+//        String HasPw = Helper.HasPw(userRequest.getUserHash());
+//        User newUser = new User();
+//        newUser.setUserId(userRequest.getId());
+//        newUser.setUserPhone(userRequest.getUserPhone());
+//        newUser.setUserEmail(userRequest.getUserEmail());
+//        newUser.setUserHash(HasPw);
+//        newUser.setUserFullName(userRequest.getUserFullName());
+//        newUser.setUserCreatedOn(new Date());
+//        newUser.setStatus(1);
+//        sendOTP(newUser,userRequest.getUserPhone());
+//        User result = iUserRepository.save(newUser);
+//
+//        if (result == null)
+//            return null;
+//        else
+//            return MapEntitytoModelResponse(newUser);
+//    }
+//
+//    public Boolean deleteById(Long id){
+//         if (findById(id) != null){
+//             iUserRepository.deleteById(id);
+//             return true;
+//         }else{
+//             return false;
+//         }
+//
+//    }
+//    public List<User> search(String keyWord){
+//        String key = "%" + keyWord + "%";
+//        return iUserRepository.findUserByName(key,key);
+//    }
+//
+//    public List<User> getAll(){
+//       return iUserRepository.getAll();
+//    }
 
 }
