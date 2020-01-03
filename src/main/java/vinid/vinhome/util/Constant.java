@@ -12,6 +12,22 @@ public class Constant {
     public static final String PAYPAL_ES = "Paypal";
     public static final String VISA_ES = "Visa";
 
+    public enum NotificationParameter {
+        SOUND("default"),
+        COLOR("#FFFF00");
+
+        private String value;
+
+        NotificationParameter(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return this.value;
+        }
+    }
+
+
     public enum AccountType {
         Private(1), Company(2), Anonymous(7);
 
